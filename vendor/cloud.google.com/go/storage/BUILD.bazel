@@ -8,6 +8,7 @@ go_library(
         "copy.go",
         "doc.go",
         "go110.go",
+        "hmac.go",
         "iam.go",
         "invoke.go",
         "not_go110.go",
@@ -31,6 +32,7 @@ go_library(
         "//vendor/google.golang.org/api/option:go_default_library",
         "//vendor/google.golang.org/api/storage/v1:go_default_library",
         "//vendor/google.golang.org/api/transport/http:go_default_library",
-        "@go_googleapis//google/iam/v1:iam_go_proto",
+        "//vendor/google.golang.org/genproto/googleapis/iam/v1:go_default_library",
+        "//vendor/google.golang.org/genproto/googleapis/type/expr:go_default_library",
     ],
 )

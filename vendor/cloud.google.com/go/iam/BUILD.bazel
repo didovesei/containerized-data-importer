@@ -8,9 +8,9 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/googleapis/gax-go/v2:go_default_library",
+        "//vendor/google.golang.org/genproto/googleapis/iam/v1:go_default_library",
+        "//vendor/google.golang.org/grpc:go_default_library",
         "//vendor/google.golang.org/grpc/codes:go_default_library",
         "//vendor/google.golang.org/grpc/metadata:go_default_library",
-        "@go_googleapis//google/iam/v1:iam_go_proto",
-        "@org_golang_google_grpc//:go_default_library",
     ],
 )
