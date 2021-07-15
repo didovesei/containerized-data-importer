@@ -25,19 +25,16 @@ type GCSDataSource struct {
 	url *url.URL
 }
 
-func NewGCSDataSource(endpoint string, saKey string) (*GCSDataSource, error) {
+var newGCSClientFunc = getGCSClient
+
+func NewGCSDataSource(endpoint, saKey string) (*GCSDataSource, error) {
 	ep, err := ParseEndpoint(endpoint)
 	if err != nil {
 		return nil, errors.Wrapf(err, fmt.Sprintf("unable to parse endpoint %q", endpoint))
 	}
 
-	var client *storage.Client
 	ctx := context.Background()
-	if len(saKey) > 0 {
-		client, err = storage.NewClient(ctx, option.WithCredentialsJSON([]byte(saKey)))
-	} else {
-		client, err = storage.NewClient(ctx)
-	}
+	client, err := newGCSClientFunc(ctx, endpoint, saKey)
 	if err != nil {
 		return nil, errors.Wrapf(err, fmt.Sprintf("unable to create GCS client: %v", err))
 	}
@@ -110,4 +107,15 @@ func (gd *GCSDataSource) Close() error {
 		err = gd.readers.Close()
 	}
 	return err
+}
+
+func getGCSClient(ctx context.Context, endpoint, saKey string) (*storage.Client, error) {
+	var client *storage.Client
+	var err error
+	if len(saKey) > 0 {
+		client, err = storage.NewClient(ctx, option.WithCredentialsJSON([]byte(saKey)))
+	} else {
+		client, err = storage.NewClient(ctx)
+	}
+	return client, err
 }
